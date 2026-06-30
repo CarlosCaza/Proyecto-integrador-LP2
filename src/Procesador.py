@@ -19,3 +19,46 @@ class ProcesadorSismos:
             return distancia_km, direccion, ciudad
         else:
             return None, None, texto_lugar.strip()
+   def transformar_a_dataframe(self) -> pd.DataFrame:
+        """APORTE INTEGRANTE 4: transforma el GeoJSON de la API en un DataFrame limpio."""
+        if not self.datos or "features" not in self.datos:
+            print("[ERROR] No hay datos válidos para procesar.")
+            return pd.DataFrame()
+
+        registros = []
+        for sismo in self.datos["features"]:
+            props = sismo.get("properties", {})
+            geometria = sismo.get("geometry", {})
+            coords = geometria.get("coordinates", [None, None, None])
+
+            lugar_texto = props.get("place", "")
+            distancia_km, direccion, ciudad = self.extraer_info_lugar(lugar_texto)
+
+            registros.append({
+                "Fecha": pd.to_datetime(props.get("time"), unit="ms", errors="coerce"),
+                "Magnitud": props.get("mag"),
+                "Lugar": lugar_texto,
+                "Ciudad_Referencia": ciudad,
+                "Distancia_km": distancia_km,
+                "Direccion": direccion,
+                "Profundidad_km": coords[2],
+                "Latitud": coords[1],
+                "Longitud": coords[0],
+            })
+
+        df = pd.DataFrame(registros)
+        df = df.dropna(subset=["Magnitud", "Profundidad_km"])
+
+        df["Nivel"] = pd.cut(
+            df["Magnitud"],
+            bins=[0, 3.9, 4.9, 5.9, 10],
+            labels=["Leve", "Moderado", "Fuerte", "Muy Fuerte"],
+        )
+
+        df = df.sort_values(by="Fecha", ascending=False).reset_index(drop=True)
+        self.df_limpio = df
+        return self.df_limpio
+
+procesador = ProcesadorSismos(datos_crudos)
+df_final = procesador.transformar_a_dataframe()
+df_final.head(10)
