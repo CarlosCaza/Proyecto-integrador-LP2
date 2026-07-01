@@ -1,4 +1,3 @@
-# APORTE INTEGRANTE 4: Clase ProcesadorSismos (incluye el metodo regex del Integrante 3)
 import re
 import pandas as pd
 
@@ -28,15 +27,6 @@ class ProcesadorSismos:
             return distancia_km, direccion, ciudad
         else:
             return None, None, texto_lugar.strip()
-
-    def _clasificar_nivel(self, magnitud: float) -> str:
-        """Clasificación auxiliar de magnitudes para habilitar los gráficos de Carlos."""
-        if magnitud < 4.5:
-            return "Leve"
-        elif magnitud < 5.5:
-            return "Moderado"
-        else:
-            return "Fuerte"
 
     def transformar_a_dataframe(self) -> pd.DataFrame:
         """APORTE INTEGRANTE 4: transforma el GeoJSON de la API en un DataFrame limpio."""
@@ -68,6 +58,7 @@ class ProcesadorSismos:
         df = pd.DataFrame(registros)
         df = df.dropna(subset=["Magnitud", "Profundidad_km"])
 
+        # Generación de la columna 'Nivel' requerida por el visualizador
         df["Nivel"] = pd.cut(
             df["Magnitud"],
             bins=[0, 3.9, 4.9, 5.9, 10],
@@ -78,10 +69,6 @@ class ProcesadorSismos:
         self.df_limpio = df
         return self.df_limpio
 
-procesador = ProcesadorSismos(datos_crudos)
-df_final = procesador.transformar_a_dataframe()
-df_final.head(10)
-
- ##Análisis básico con pandas
-print("Total de sismos analizados:", len(df_final))
-df_final.describe()[["Magnitud", "Profundidad_km"]]
+# PROTECCIÓN: Evita la ejecución automática de código suelto al ser importado por main.py
+if __name__ == "__main__":
+    print("[INFO] Clase ProcesadorSismos cargada correctamente en modo local.")

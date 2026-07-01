@@ -1,8 +1,8 @@
 # CONFIGURACIÓN INICIAL Y ORQUESTACIÓN
 
-from src.extractor import ExtractorSismos
-from src.procesador import ProcesadorSismos
-from src.visualizador import VisualizadorSismos
+from src.Extractor import ExtractorSismos
+from src.Procesador import ProcesadorSismos
+from src.Visualizador import VisualizadorSismos
 
 print("=" * 60)
 print(" PROYECTO INTEGRADOR: SISMOS EN PERÚ (Fuente: API USGS) ")
