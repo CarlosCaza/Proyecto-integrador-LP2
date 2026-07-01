@@ -67,6 +67,14 @@ class ProcesadorSismos:
 
         df = df.sort_values(by="Fecha", ascending=False).reset_index(drop=True)
         self.df_limpio = df
+
+        # Redondeo de variables numéricas para mejorar la presentación visual
+        df["Profundidad_km"] = df["Profundidad_km"].round(2)
+        df["Latitud"] = df["Latitud"].round(4)
+        df["Longitud"] = df["Longitud"].round(4)
+
+
+
         return self.df_limpio
 
 # PROTECCIÓN: Evita la ejecución automática de código suelto al ser importado por main.py
