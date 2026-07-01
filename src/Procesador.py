@@ -13,8 +13,7 @@ class ProcesadorSismos:
 
     def extraer_info_lugar(self, texto_lugar: str):
         """
-        [APORTE DANTE - REGEX]
-        Usa regex para extraer (distancia_km, direccion, ciudad) del texto del sismo.
+        Extrae la distancia, dirección y ciudad de un texto de lugar.
         """
         if not isinstance(texto_lugar, str):
             return None, None, "Desconocido"
