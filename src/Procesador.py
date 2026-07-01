@@ -1,11 +1,11 @@
-# APORTE INTEGRANTE 4: Clase ProcesadorSismos (incluye el metodo regex del Integrante 3)
+# APORTE Jorge: Clase ProcesadorSismos (incluye el metodo regex del Integrante 3)
 import re
 import pandas as pd
 
 class ProcesadorSismos:
     """Clase encargada de limpiar, validar y transformar los datos de sismos."""
 
-    # CORRECCIÓN DANTE: Cambiado a {1,3} para capturar direcciones como ESE o ENE
+    #  Cambiado a {1,3} para capturar direcciones como ESE o ENE
     PATRON_LUGAR = r"(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+([A-Za-zà-ÿ\s]+),\s*Peru"
 
     def __init__(self, datos_api: dict):
@@ -14,7 +14,6 @@ class ProcesadorSismos:
 
     def extraer_info_lugar(self, texto_lugar: str):
         """
-        [APORTE DANTE - REGEX]
         Usa regex para extraer (distancia_km, direccion, ciudad) del texto del sismo.
         """
         if not isinstance(texto_lugar, str):
@@ -39,7 +38,7 @@ class ProcesadorSismos:
             return "Fuerte"
 
     def transformar_a_dataframe(self) -> pd.DataFrame:
-        """APORTE INTEGRANTE 4: transforma el GeoJSON de la API en un DataFrame limpio."""
+        """ transforma el GeoJSON de la API en un DataFrame limpio."""
         if not self.datos or "features" not in self.datos:
             print("[ERROR] No hay datos válidos para procesar.")
             return pd.DataFrame()
